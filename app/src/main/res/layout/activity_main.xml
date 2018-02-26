@@ -42,6 +42,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:shadowRadius="5"
+        android:onClick="showRules"
         android:background="@color/colorAccent"
         android:text="@string/rules"
         android:textColor="#FFFFFF"
