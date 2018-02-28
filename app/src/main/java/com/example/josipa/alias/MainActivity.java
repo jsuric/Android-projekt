@@ -2,6 +2,7 @@ package com.example.josipa.alias;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
+// call the activity that adds teams
+    public void addTeams(View view)
+    {
+        Intent intent = new Intent(MainActivity.this, CreateTeamsActivity.class);
+        startActivity(intent);
+    }
 
 }

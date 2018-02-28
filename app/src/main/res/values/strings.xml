@@ -9,4 +9,13 @@
         riječi ili korijena riječi rezultira -1 bodom. Igra se do 10 bodova u jednoj partiji. Vrijeme
         koje ti i partner imate za objašnjavanje iznosi 60 sekundi! SRETNO!
     </string>
+    <string name="addTeam">Dodaj</string>
+    <string name="startGame">Igraj</string>
+    <string name="teamname">Naziv tima</string>
+    <string name="firstPlayer">Prvi igrač</string>
+    <string name="secondPlayer">Drugi igrač</string>
+    <string name="createTeam">OK</string>
+    <string name="cancel">Odustani</string>
+    <string name="pogodi">TOČNO</string>
+    <string name="preskoci">NETOČNO</string>
 </resources>

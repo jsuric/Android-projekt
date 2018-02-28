@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.josipa.alias.PlayGameActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/timer"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/bodovi"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/rijec"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:id="@+id/zabranjene"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pogodi"
+        android:text="@string/pogodi"
+        android:onClick="pogodi"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowRadius="5"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/preskoci"
+        android:text="@string/preskoci"
+        android:onClick="preskoci"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowRadius="5"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"/>
+
+</LinearLayout>

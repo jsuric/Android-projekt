@@ -57,6 +57,7 @@
         android:shadowRadius="5"
         android:background="@color/colorAccent"
         android:text="@string/teams"
+        android:onClick="addTeams"
         android:textColor="#FFFFFF"
         android:textSize="20sp" />
 
