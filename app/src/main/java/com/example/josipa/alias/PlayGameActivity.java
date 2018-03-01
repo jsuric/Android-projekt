@@ -18,6 +18,7 @@ public class PlayGameActivity extends MainActivity {
 
     int bodovi = 0;
     ArrayList<Team> teamsList = new ArrayList<Team>();
+    CountDownTimer timer;
 
 
     @Override
@@ -26,30 +27,46 @@ public class PlayGameActivity extends MainActivity {
         setContentView(R.layout.activity_play_game);
 
         Bundle bundle = getIntent().getExtras();
+        // lista timova koju smo dobili od create team activity
         teamsList = (ArrayList<Team>) bundle.getSerializable("teams_list");
-
-        TextView t2 = (TextView)findViewById(R.id.playing_team);
-        String prvitim=teamsList.get(0).teamName.toString();
-        t2.setText(prvitim);
 
         DBAdapter db = new DBAdapter(this);
 
+        TextView t2 = (TextView)findViewById(R.id.playing_team);
+
+        TextView t3 = (TextView)findViewById(R.id.reading_player);
+
+        TextView t4 = (TextView)findViewById(R.id.bodovi);
+
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.append("Bodovi: "+String.valueOf(bodovi));
 
-        new CountDownTimer(60000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                TextView tim = (TextView)findViewById(R.id.timer);
-                tim.setText(" "+millisUntilFinished/1000);
-            }
+        int l = teamsList.size();
 
-            @Override
-            public void onFinish() {
-                TextView tim = (TextView)findViewById(R.id.timer);
-                tim.setText("gotovo");
-            }
-        }.start();
+        for(int i=0; i<l; i++)
+        {
+            String tim=teamsList.get(i).teamName.toString();
+            t2.setText(tim);
+            String player = teamsList.get(i).firstPlayer.toString();
+            t3.setText(player);
+
+            t.setText("Bodovi: "+String.valueOf(l));
+
+            new CountDownTimer(5000, 1000) {
+                int gotovo=0;
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    TextView tim = (TextView)findViewById(R.id.timer);
+                    tim.setText(" "+millisUntilFinished/1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    TextView tim = (TextView)findViewById(R.id.timer);
+                    start();
+                }
+            }.start();
+
+        }
 
         //---add a contact---
         db.open();
@@ -221,5 +238,22 @@ public class PlayGameActivity extends MainActivity {
         TextView t = (TextView)findViewById(R.id.bodovi);
         t.setText("Bodovi: "+String.valueOf(bodovi));
         getRandomWord();
+    }
+
+    public void startTimer()
+    {
+       timer = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TextView tim = (TextView)findViewById(R.id.timer);
+                tim.setText(" "+millisUntilFinished/1000);
+            }
+
+            @Override
+            public void onFinish() {
+                TextView tim = (TextView)findViewById(R.id.timer);
+                tim.setText("gotovo");
+            }
+        }.start();
     }
 }
