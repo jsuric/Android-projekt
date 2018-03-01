@@ -20,6 +20,10 @@ public class PlayGameActivity extends MainActivity {
     ArrayList<Team> teamsList = new ArrayList<Team>();
     CountDownTimer timer;
 
+    int i=0;
+    int l=0;
+
+
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -32,22 +36,27 @@ public class PlayGameActivity extends MainActivity {
 
         DBAdapter db = new DBAdapter(this);
 
+
         TextView t2 = (TextView)findViewById(R.id.playing_team);
 
         TextView t3 = (TextView)findViewById(R.id.reading_player);
+
+        //TextView t3;
 
         TextView t4 = (TextView)findViewById(R.id.bodovi);
 
         TextView t = (TextView)findViewById(R.id.bodovi);
 
-        int l = teamsList.size();
+         l = teamsList.size();
 
-        for(int i=0; i<l; i++)
-        {
-            String tim=teamsList.get(i).teamName.toString();
-            t2.setText(tim);
-            String player = teamsList.get(i).firstPlayer.toString();
-            t3.setText(player);
+
+
+        String timnm=teamsList.get(i).teamName.toString();
+        t2.setText(timnm);
+        String player = teamsList.get(i).firstPlayer.toString();
+        t3.setText(player);
+
+
 
             t.setText("Bodovi: "+String.valueOf(l));
 
@@ -61,12 +70,28 @@ public class PlayGameActivity extends MainActivity {
 
                 @Override
                 public void onFinish() {
-                    TextView tim = (TextView)findViewById(R.id.timer);
-                    start();
+                    //TextView tim = (TextView)findViewById(R.id.timer);
+                    i++;
+
+                    if(i<l)
+                    {
+                        TextView t2 = (TextView)findViewById(R.id.playing_team);
+
+                        TextView t3 = (TextView)findViewById(R.id.reading_player);
+
+                        String tim2=teamsList.get(i).teamName.toString();
+                        t2.setText(tim2);
+                        String player = teamsList.get(i).firstPlayer.toString();
+                        t3.setText(player);
+                        start();
+
+                    }
+
+
                 }
             }.start();
 
-        }
+
 
         //---add a contact---
         db.open();
