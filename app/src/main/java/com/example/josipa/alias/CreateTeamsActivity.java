@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +86,11 @@ public class CreateTeamsActivity extends AppCompatActivity {
     // call the activity that starts a game
     public void startGame (View view)
     {
-        Intent intent = new Intent(CreateTeamsActivity.this, PlayGameActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, PlayGameActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("teams_list", gameTeams);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
     }
 
 }

@@ -16,6 +16,6 @@
     <string name="secondPlayer">Drugi igrač</string>
     <string name="createTeam">OK</string>
     <string name="cancel">Odustani</string>
-    <string name="pogodi">TOČNO</string>
-    <string name="preskoci">NETOČNO</string>
+    <string name="pogodi">&#x2713;</string>
+    <string name="preskoci">&#x2717;</string>
 </resources>

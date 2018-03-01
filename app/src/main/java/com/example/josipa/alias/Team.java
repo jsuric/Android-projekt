@@ -1,15 +1,18 @@
 package com.example.josipa.alias;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 /**
  * Created by Josipa on 28.2.2018..
  */
 
-public class Team extends CreateTeamsActivity{
+public class Team implements Serializable {
     String teamName="";
     String firstPlayer="";
     String secondPlayer="";

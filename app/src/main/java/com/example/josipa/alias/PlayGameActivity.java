@@ -7,21 +7,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayGameActivity extends AppCompatActivity {
+public class PlayGameActivity extends MainActivity {
 
     int bodovi = 0;
+    ArrayList<Team> teamsList = new ArrayList<Team>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
 
+        Bundle bundle = getIntent().getExtras();
+        teamsList = (ArrayList<Team>) bundle.getSerializable("teams_list");
+
+        TextView t2 = (TextView)findViewById(R.id.playing_team);
+        String prvitim=teamsList.get(0).teamName.toString();
+        t2.setText(prvitim);
+
         DBAdapter db = new DBAdapter(this);
 
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.append("Bodovi:"+String.valueOf(bodovi));
+        t.append("Bodovi: "+String.valueOf(bodovi));
 
         new CountDownTimer(60000, 1000) {
             @Override
@@ -188,7 +197,7 @@ public class PlayGameActivity extends AppCompatActivity {
     public void pogodi(View view) {
         bodovi++;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi"+String.valueOf(bodovi));
+        t.setText("Bodovi: "+String.valueOf(bodovi));
         Random r=new Random();
         int n=(r.nextInt(121));
         DBAdapter db = new DBAdapter(this);
@@ -201,7 +210,7 @@ public class PlayGameActivity extends AppCompatActivity {
     public void preskoci(View view) {
         bodovi--;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi"+String.valueOf(bodovi));
+        t.setText("Bodovi: "+String.valueOf(bodovi));
         Random r=new Random();
         int n=(r.nextInt(121));
         DBAdapter db = new DBAdapter(this);
