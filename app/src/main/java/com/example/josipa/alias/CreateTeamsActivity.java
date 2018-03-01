@@ -66,6 +66,11 @@ public class CreateTeamsActivity extends AppCompatActivity {
         Team team = new Team(name, first, second);
         gameTeams.add(team);
 
+        input1.setText("");
+        input2.setText("");
+        input3.setText("");
+        input1.requestFocus();
+
         TextView teams = (TextView) findViewById(R.id.show_teams_list);
         teams.setText("");
         for( Team teamItem : gameTeams)
