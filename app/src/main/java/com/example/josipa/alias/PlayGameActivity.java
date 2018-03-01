@@ -18,23 +18,15 @@ public class PlayGameActivity extends MainActivity {
 
     int bodovi = 0;
     ArrayList<Team> teamsList = new ArrayList<Team>();
-    Map<String, Integer> teams;
-
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
 
         Bundle bundle = getIntent().getExtras();
         teamsList = (ArrayList<Team>) bundle.getSerializable("teams_list");
-        //napravili smo mapu u kojoj smo svakom timu na početku pridružili nula bodova, sad kasnij samo povećavamo to
-        // kasnije pristupamo sa teams.put('imeTima', map.get('imeTima')+1) ili -1 
-        for (Team tim: teamsList) {
-           teams.put(tim.teamName,0);
-        }
-
 
         TextView t2 = (TextView)findViewById(R.id.playing_team);
         String prvitim=teamsList.get(0).teamName.toString();
