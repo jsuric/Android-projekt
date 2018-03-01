@@ -194,10 +194,7 @@ public class PlayGameActivity extends MainActivity {
 
     }
 
-    public void pogodi(View view) {
-        bodovi++;
-        TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(bodovi));
+    private void getRandomWord() {
         Random r=new Random();
         int n=(r.nextInt(121));
         DBAdapter db = new DBAdapter(this);
@@ -207,16 +204,17 @@ public class PlayGameActivity extends MainActivity {
             DisplayContact(cu);
     }
 
+    public void pogodi(View view) {
+        bodovi++;
+        TextView t = (TextView)findViewById(R.id.bodovi);
+        t.setText("Bodovi: "+String.valueOf(bodovi));
+        getRandomWord();
+    }
+
     public void preskoci(View view) {
         bodovi--;
         TextView t = (TextView)findViewById(R.id.bodovi);
         t.setText("Bodovi: "+String.valueOf(bodovi));
-        Random r=new Random();
-        int n=(r.nextInt(121));
-        DBAdapter db = new DBAdapter(this);
-        db.open();
-        Cursor cu = db.getWord(n);
-        if (cu.moveToFirst())
-            DisplayContact(cu);
+        getRandomWord();
     }
 }

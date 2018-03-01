@@ -23,22 +23,20 @@ public class MainActivity extends AppCompatActivity {
         // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-// 2. Chain together various setter methods to set the dialog characteristics
+        // 2. Chain together various setter methods to set the dialog characteristics
         builder.setMessage(R.string.rulesString)
                 .setTitle(R.string.rules)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
-// 3. Get the AlertDialog from create()
+        // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-// call the activity that adds teams
+    // call the activity that adds teams
     public void addTeams(View view)
     {
         Intent intent = new Intent(MainActivity.this, CreateTeamsActivity.class);

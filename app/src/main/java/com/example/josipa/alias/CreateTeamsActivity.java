@@ -56,8 +56,8 @@ public class CreateTeamsActivity extends AppCompatActivity {
 
        // get new team information from activty_create_teams and create a new team
 
-       EditText input1 = (EditText) findViewById(R.id.team_name);
-       String name = input1.getText().toString();
+        EditText input1 = (EditText) findViewById(R.id.team_name);
+        String name = input1.getText().toString();
         EditText input2 = (EditText) findViewById(R.id.first_player);
         String first = input2.getText().toString();
         EditText input3 = (EditText) findViewById(R.id.second_player);
