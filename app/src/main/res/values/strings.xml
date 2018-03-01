@@ -6,7 +6,9 @@
     <string name="rulesString">Cilj igre je pogoditi što više riječi koje ti partner objašnjava,
         pri tome ne koristeći korijen riječi ili nedozovoljene riječi koje su navedene na dnu ekrana.
         Svaka pogođena riječ nosi +1 bod a svaka nepogođena nosi -1 bod. Također korištenje nedozvoljenih
-        riječi ili korijena riječi rezultira -1 bodom. Igra se do 10 bodova u jednoj partiji. Vrijeme
+        riječi ili korijena riječi rezultira -1 bodom. Partija se igra 4 kruga na način da u prvom krugu objašnjava
+        prva osoba svih timova, u drugom krugu druga osoba i onda još jednom ponovite ta dva kruga. Pobjeđuje
+        tim s najviše ukupnih bodova. Ako bude neriješeno, svi ponavljate još jednu rundu. Vrijeme
         koje ti i partner imate za objašnjavanje iznosi 60 sekundi! SRETNO!
     </string>
     <string name="addTeam">Dodaj</string>

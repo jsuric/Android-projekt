@@ -1,97 +1,92 @@
 package com.example.josipa.alias;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class PlayGameActivity extends MainActivity {
 
-    int bodovi = 0;
+    int scores = 0;
+    int lap = 0;
     ArrayList<Team> teamsList = new ArrayList<Team>();
     CountDownTimer timer;
+    AlertDialog dialog;
 
-    int i=0;
-    int l=0;
+    TextView playingTeam;
+    TextView readingPlayer;
+    TextView score;
 
+    int currentTeam =0;
+    int numberOfTeams =0;
 
 
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_game);
+    protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_play_game);
 
-        Bundle bundle = getIntent().getExtras();
-        // lista timova koju smo dobili od create team activity
-        teamsList = (ArrayList<Team>) bundle.getSerializable("teams_list");
+    Bundle bundle = getIntent().getExtras();
+    // lista timova koju smo dobili od create team activity
+    teamsList = (ArrayList<Team>) bundle.getSerializable("teams_list");
+    lap++;
+    DBAdapter db = new DBAdapter(this);
 
-        DBAdapter db = new DBAdapter(this);
+    numberOfTeams = teamsList.size();
 
+    playingTeam = (TextView)findViewById(R.id.playing_team);
+    readingPlayer = (TextView)findViewById(R.id.reading_player);
+    score = (TextView)findViewById(R.id.bodovi);
 
-        TextView t2 = (TextView)findViewById(R.id.playing_team);
+    String tim=teamsList.get(currentTeam).teamName.toString();
+    playingTeam.setText(tim);
+    String player = teamsList.get(currentTeam).firstPlayer.toString();
+    readingPlayer.setText(player);
+    score.setText("Bodovi: "+String.valueOf(scores));
 
-        TextView t3 = (TextView)findViewById(R.id.reading_player);
-
-        //TextView t3;
-
-        TextView t4 = (TextView)findViewById(R.id.bodovi);
-
-        TextView t = (TextView)findViewById(R.id.bodovi);
-
-         l = teamsList.size();
-
-
-
-        String timnm=teamsList.get(i).teamName.toString();
-        t2.setText(timnm);
-        String player = teamsList.get(i).firstPlayer.toString();
-        t3.setText(player);
+    waitForPlayerToBeReady();
 
 
+    timer = new CountDownTimer(10000, 1000) {
 
-            t.setText("Bodovi: "+String.valueOf(l));
+        @Override
+        public void onTick(long millisUntilFinished) {
+            TextView tim = (TextView)findViewById(R.id.timer);
+            tim.setText(" "+millisUntilFinished/1000);
+        }
 
-            new CountDownTimer(5000, 1000) {
-                int gotovo=0;
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    TextView tim = (TextView)findViewById(R.id.timer);
-                    tim.setText(" "+millisUntilFinished/1000);
-                }
+        @Override
+        public void onFinish() {
+            String tim = "";
+            String player = "";
+            addScoresToTeam(teamsList.get(currentTeam).teamName);
+            scores = 0;
+            currentTeam++;
 
-                @Override
-                public void onFinish() {
-                    //TextView tim = (TextView)findViewById(R.id.timer);
-                    i++;
-
-                    if(i<l)
-                    {
-                        TextView t2 = (TextView)findViewById(R.id.playing_team);
-
-                        TextView t3 = (TextView)findViewById(R.id.reading_player);
-
-                        String tim2=teamsList.get(i).teamName.toString();
-                        t2.setText(tim2);
-                        String player = teamsList.get(i).firstPlayer.toString();
-                        t3.setText(player);
-                        start();
-
-                    }
-
-
-                }
-            }.start();
-
-
+            if (currentTeam < numberOfTeams)
+            {
+                setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
+                waitForPlayerToBeReady();
+            }
+            else if (currentTeam == numberOfTeams && (lap == 1 || lap == 3)){
+                lap++;
+                currentTeam = 0;
+                setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
+                waitForPlayerToBeReady();
+            }
+            else {
+                calculateWinner();
+            }
+        }
+    };
 
         //---add a contact---
         db.open();
@@ -227,11 +222,54 @@ public class PlayGameActivity extends MainActivity {
         db.open();
         Cursor cu = db.getWord(n);
         if (cu.moveToFirst())
-            DisplayContact(cu);
+            displayWords(cu);
         db.close();
     }
 
-    public void DisplayContact(Cursor c)
+    private void calculateWinner() {
+        Team bestTeam = teamsList.get(0);
+        int i = 0;
+        for (Team team : teamsList) {
+            if (team.score >= bestTeam.score) {
+                if (team.score == bestTeam.score &&
+                        !bestTeam.teamName.equals(teamsList.get(0).teamName)) i++;
+                else i=0;
+                bestTeam = team;
+            }
+        }
+        if (i > 0) {
+            // kao treba odigrati još jedan krug
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Tim "+bestTeam.teamName+" pobjeđuje s "+ bestTeam.score+" bodova. ČESTITKE!",
+                    Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void setCurrentTeamAndPlayer(TextView playingTeam, TextView readingPlayer, TextView score) {
+        String tim;
+        String player;
+        tim=teamsList.get(currentTeam).teamName;
+        playingTeam.setText(tim);
+        if (lap == 1 || lap == 3)
+            player = teamsList.get(currentTeam).firstPlayer;
+        else
+            player = teamsList.get(currentTeam).secondPlayer;
+        readingPlayer.setText(player);
+        score.setText("Bodovi: "+String.valueOf(scores));
+    }
+
+    private void addScoresToTeam(String teamName) {
+        for (Team team : teamsList) {
+            if (team.teamName.equals(teamName))
+            {
+                team.score += scores;
+            }
+        }
+    }
+
+    public void displayWords(Cursor c)
     {
         TextView t = (TextView)findViewById(R.id.rijec);
         t.setText(c.getString(1)+"\n");
@@ -248,37 +286,36 @@ public class PlayGameActivity extends MainActivity {
         db.open();
         Cursor cu = db.getWord(n);
         if (cu.moveToFirst())
-            DisplayContact(cu);
+            displayWords(cu);
     }
 
     public void pogodi(View view) {
-        bodovi++;
+        scores++;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(bodovi));
+        t.setText("Bodovi: "+String.valueOf(scores));
         getRandomWord();
     }
 
     public void preskoci(View view) {
-        bodovi--;
+        scores--;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(bodovi));
+        t.setText("Bodovi: "+String.valueOf(scores));
         getRandomWord();
     }
 
-    public void startTimer()
-    {
-       timer = new CountDownTimer(5000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                TextView tim = (TextView)findViewById(R.id.timer);
-                tim.setText(" "+millisUntilFinished/1000);
-            }
-
-            @Override
-            public void onFinish() {
-                TextView tim = (TextView)findViewById(R.id.timer);
-                tim.setText("gotovo");
-            }
-        }.start();
+    private void waitForPlayerToBeReady() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Klikni za početak odbrojavanja.")
+                .setPositiveButton("KRENI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        timer.start();
+                    }
+                });
+        dialog = builder.create();
+        dialog.show();
     }
+
 }
+
