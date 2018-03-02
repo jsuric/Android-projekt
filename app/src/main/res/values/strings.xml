@@ -20,5 +20,15 @@
     <string name="cancel">Odustani</string>
     <string name="pogodi">&#x2713;</string>
     <string name="preskoci">&#x2717;</string>
+    <string name="score_txt">Bodovi: </string>
     <string name="deleteTeams">Izbriši zadnji tim</string>
+    <string name="pause">PAUZA</string>
+    <string name="resume">KRENI</string>
+    <string name="timerMsg">Klikni za početak odbrojavanja.</string>
+    <string name="go">KRENI</string>
+    <string name="winnerTitle">(: POBJEDNIK :)</string>
+    <string name="winner">Pobjednik jeeeee:  </string>
+    <string name="congrats">ČESTITKE!</string>
+    <string name="againOrNot">Želite li ponovno igrati u istom sastavu?</string>
+    <string name="lastLap">Ide zadnji i odlučujući krug zbog izjednačenja, dajte najbolje od sebe :D</string>
 </resources>

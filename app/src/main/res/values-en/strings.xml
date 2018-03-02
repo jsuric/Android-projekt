@@ -21,4 +21,14 @@
     <string name="pogodi">&#x2713;</string>
     <string name="preskoci">&#x2717;</string>
     <string name="deleteTeams">Remove last team</string>
+    <string name="pause">PAUSE</string>
+    <string name="resume">RESUME</string>
+    <string name="score_txt">Score: </string>
+    <string name="timerMsg">Click GO to start.</string>
+    <string name="go">GO</string>
+    <string name="winnerTitle">(: WINNER :)</string>
+    <string name="winner">Winner iiiiissssss:  </string>
+    <string name="congrats">Congratulations!</string>
+    <string name="againOrNot">Do you wanna play again with same teams?</string>
+    <string name="lastLap">Here goes the winner lap!! Give your best :D</string>
 </resources>

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +18,7 @@ public class PlayGameActivity extends MainActivity {
 
     int scores = 0;
     int lap = 0;
+    int millis;
     ArrayList<Team> teamsList = new ArrayList<Team>();
     CountDownTimer timer;
     AlertDialog dialog;
@@ -53,12 +53,13 @@ public class PlayGameActivity extends MainActivity {
     playingTeam.setText(tim);
     String player = teamsList.get(currentTeam).firstPlayer.toString();
     readingPlayer.setText(player);
-    score.setText("Bodovi: "+String.valueOf(scores));
+    String text = R.string.score_txt +" "+ String.valueOf(scores);
+    score.setText(text);
 
     waitForPlayerToBeReady();
 
 
-    timer = new CountDownTimer(3000, 1000) {
+    timer = new CountDownTimer(60000, 1000) {
 
         @Override
         public void onTick(long millisUntilFinished) {
@@ -111,17 +112,17 @@ public class PlayGameActivity extends MainActivity {
             playAnotherLapAndAnnounceWinner();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("(: POBJEDNIK :)")
-                    .setMessage("Pobjednik jeeee     \n" +bestTeam.teamName+ "\n sa "+bestTeam.score+" bodova! " +
-                    "\n ČESTITKE! :) \n Želite li ponovno igrati u istom sastavu?" )
-                    .setPositiveButton("DA", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.winnerTitle)
+                    .setMessage(R.string.winner+"\n" +bestTeam.teamName+ " "+bestTeam.score + "\n" +
+                    "\n "+ R.string.congrats +" \n" + R.string.againOrNot)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             resetValues();
                             waitForPlayerToBeReady();
                         }
                     })
-                    .setNegativeButton("NE", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(PlayGameActivity.this, CreateTeamsActivity.class);
@@ -151,7 +152,7 @@ public class PlayGameActivity extends MainActivity {
             lap=1;
             setCurrentTeamAndPlayer(playingTeam,readingPlayer,score);
             getRandomWord();
-            Toast.makeText(this ,"Ide zadnji i odlučujući krug zbog izjednačenja, dajte najbolje od sebe :D ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this ,R.string.lastLap, Toast.LENGTH_LONG).show();
             waitForPlayerToBeReady();
             lastRound = true;
     }
@@ -166,7 +167,7 @@ public class PlayGameActivity extends MainActivity {
         else
             player = teamsList.get(currentTeam).secondPlayer;
         readingPlayer.setText(player);
-        score.setText("Bodovi: "+String.valueOf(scores));
+        score.setText(R.string.score_txt +String.valueOf(scores));
     }
 
     private void addScoresToTeam(String teamName) {
@@ -175,6 +176,22 @@ public class PlayGameActivity extends MainActivity {
             {
                 team.score += scores;
             }
+        }
+    }
+
+    public void timerPause(View view)
+    {
+        TextView time = (TextView) findViewById(R.id.timer);
+        TextView pauseButton = (TextView) findViewById(R.id.pauseButton);
+        String text = pauseButton.getText().toString();
+        if (text.equals(R.string.pause)) {
+            millis = Integer.getInteger((String) time.getText());
+            timer.cancel();
+            pauseButton.setText(R.string.resume);
+        }
+        else {
+            pauseButton.setText(R.string.pause);
+            timer.start();
         }
     }
 
@@ -202,21 +219,21 @@ public class PlayGameActivity extends MainActivity {
     public void pogodi(View view) {
         scores++;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(scores));
+        t.setText(new StringBuilder().append(R.string.score_txt).append(String.valueOf(scores)).toString());
         getRandomWord();
     }
 
     public void preskoci(View view) {
         scores--;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(scores));
+        t.setText(R.string.score_txt +String.valueOf(scores));
         getRandomWord();
     }
 
     private void waitForPlayerToBeReady() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Klikni za početak odbrojavanja.")
-                .setPositiveButton("KRENI", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.timerMsg)
+                .setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

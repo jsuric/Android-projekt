@@ -104,14 +104,12 @@
 
      </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"
         android:orientation="horizontal">
-
 
     <Button
         android:layout_width="wrap_content"
@@ -127,6 +125,14 @@
         android:background="#FFCDD2"
         android:textSize="50sp" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pauseButton"
+            android:onClick="timerPause"
+            android:ellipsize="middle"
+            android:text="@string/pause"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +146,10 @@
         android:textColor="#FF0000"
         android:background="#FFCDD2"
         android:textSize="50sp"/>
+
+
     </LinearLayout>
+
 
 </LinearLayout>
 
