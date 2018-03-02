@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -30,29 +32,7 @@ public class CreateTeamsActivity extends AppCompatActivity {
 
     public void showAddedTeam(View view)
     {
-        //tray of showing alerDialog for adding a new team
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
-        LayoutInflater inflater = this.getLayoutInflater();
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.add_new_team, null))
-                // Add action buttons
-                .setPositiveButton(R.string.createTeam, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        // add teams
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        getLayoutInflater().inflate(R.layout.activity_create_teams, null);
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show(); */
 
        // get new team information from activty_create_teams and create a new team
 
@@ -63,20 +43,32 @@ public class CreateTeamsActivity extends AppCompatActivity {
         EditText input3 = (EditText) findViewById(R.id.second_player);
         String second = input3.getText().toString();
 
-        Team team = new Team(name, first, second);
-        gameTeams.add(team);
+        //check ih strings are empty
 
-        input1.setText("");
-        input2.setText("");
-        input3.setText("");
-        input1.requestFocus();
+        if(name.isEmpty() || first.isEmpty() || second.isEmpty() )
+        {
+            Toast.makeText(this, "Popunite sva polja!", Toast.LENGTH_LONG).show();
 
-        TextView teams = (TextView) findViewById(R.id.show_teams_list);
-        teams.setText("");
-        for( Team teamItem : gameTeams)
-            show(teamItem, teams);
+        }
 
-        //team.showTeam();
+        else
+        {
+            Team team = new Team(name, first, second);
+            gameTeams.add(team);
+
+            input1.setText("");
+            input2.setText("");
+            input3.setText("");
+            input1.requestFocus();
+
+            TextView teams = (TextView) findViewById(R.id.show_teams_list);
+            teams.setText("");
+            for( Team teamItem : gameTeams)
+                show(teamItem, teams);
+
+        }
+
+
     }
 
     // help function for showing team
@@ -91,11 +83,27 @@ public class CreateTeamsActivity extends AppCompatActivity {
     // call the activity that starts a game
     public void startGame (View view)
     {
-        Intent intent = new Intent(this, PlayGameActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("teams_list", gameTeams);
-        intent.putExtras(bundle);
-        this.startActivity(intent);
+        if(gameTeams.isEmpty())
+        {
+            Toast.makeText(this, "Niste dodali timove!", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Intent intent = new Intent(this, PlayGameActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("teams_list", gameTeams);
+            intent.putExtras(bundle);
+            this.startActivity(intent);
+        }
+
+    }
+
+    // delete teams list
+    public void deleteTeams(View view)
+    {
+        TextView teams1 = (TextView) findViewById(R.id.show_teams_list);
+        teams1.setText("");
+        gameTeams.clear();
     }
 
 }

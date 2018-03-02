@@ -66,6 +66,19 @@
         android:onClick="showAddedTeam"/>
 
     <Button
+        android:id="@+id/delete_teams_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:shadowRadius="5"
+        android:background="@color/colorAccent"
+        android:text="@string/deleteTeams"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:onClick="deleteTeams"/>
+
+    <Button
         android:id="@+id/start_game_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,5 +90,7 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:onClick="startGame"/>
+
+
 
 </LinearLayout>
