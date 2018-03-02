@@ -151,6 +151,7 @@ public class PlayGameActivity extends MainActivity {
             lap=1;
             setCurrentTeamAndPlayer(playingTeam,readingPlayer,score);
             getRandomWord();
+            Toast.makeText(this ,"Ide zadnji i odlučujući krug zbog izjednačenja, dajte najbolje od sebe :D ", Toast.LENGTH_LONG).show();
             waitForPlayerToBeReady();
             lastRound = true;
     }
