@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/team_and_player"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -47,6 +48,8 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
+         android:id="@+id/timer_and_score"
+         app:layout_constraintTop_toBottomOf="@+id/team_and_player"
         >
     <TextView
         android:layout_width="wrap_content"
@@ -78,6 +81,8 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:orientation="vertical"
+             android:id="@+id/words"
+             app:layout_constraintTop_toBottomOf="@+id/timer_and_score"
              >
 
     <TextView
@@ -107,8 +112,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
         android:orientation="horizontal">
 
     <Button
@@ -151,5 +158,5 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
 

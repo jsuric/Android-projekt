@@ -53,7 +53,7 @@ public class PlayGameActivity extends MainActivity {
     playingTeam.setText(tim);
     String player = teamsList.get(currentTeam).firstPlayer.toString();
     readingPlayer.setText(player);
-    String text = R.string.score_txt +" "+ String.valueOf(scores);
+    String text = "Bodovi: "+ String.valueOf(scores);
     score.setText(text);
 
     waitForPlayerToBeReady();
@@ -167,7 +167,7 @@ public class PlayGameActivity extends MainActivity {
         else
             player = teamsList.get(currentTeam).secondPlayer;
         readingPlayer.setText(player);
-        score.setText(R.string.score_txt +String.valueOf(scores));
+        score.setText("Bodovi: " +String.valueOf(scores));
     }
 
     private void addScoresToTeam(String teamName) {
@@ -219,7 +219,7 @@ public class PlayGameActivity extends MainActivity {
     public void pogodi(View view) {
         scores++;
         TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText(new StringBuilder().append(R.string.score_txt).append(String.valueOf(scores)).toString());
+        t.setText(new StringBuilder().append(R.string.score_txt).append(String.valueOf(scores)));
         getRandomWord();
     }
 

@@ -23,7 +23,7 @@
     <string name="deleteTeams">Remove</string>
     <string name="pause">PAUSE</string>
     <string name="resume">RESUME</string>
-    <string name="score_txt">Score: </string>
+    <string name="score_txt">Score</string>
     <string name="timerMsg">Click GO to start.</string>
     <string name="go">GO</string>
     <string name="winnerTitle">(: WINNER :)</string>

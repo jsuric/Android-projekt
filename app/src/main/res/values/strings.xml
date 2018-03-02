@@ -20,7 +20,7 @@
     <string name="cancel">Odustani</string>
     <string name="pogodi">&#x2713;</string>
     <string name="preskoci">&#x2717;</string>
-    <string name="score_txt">Bodovi: </string>
+    <string name="score_txt">Bodovi</string>
     <string name="deleteTeams">Izbriši</string>
     <string name="pause">PAUZA</string>
     <string name="resume">KRENI</string>
