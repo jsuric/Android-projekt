@@ -20,7 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="pogodi">&#x2713;</string>
     <string name="preskoci">&#x2717;</string>
-    <string name="deleteTeams">Remove last team</string>
+    <string name="deleteTeams">Remove</string>
     <string name="pause">PAUSE</string>
     <string name="resume">RESUME</string>
     <string name="score_txt">Score: </string>
