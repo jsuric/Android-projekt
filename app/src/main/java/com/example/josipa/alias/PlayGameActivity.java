@@ -58,7 +58,7 @@ public class PlayGameActivity extends MainActivity {
     waitForPlayerToBeReady();
 
 
-    timer = new CountDownTimer(10000, 1000) {
+    timer = new CountDownTimer(3000, 1000) {
 
         @Override
         public void onTick(long millisUntilFinished) {
@@ -102,12 +102,12 @@ public class PlayGameActivity extends MainActivity {
         for (Team team : teamsList) {
             if (team.score >= bestTeam.score) {
                 if (team.score == bestTeam.score &&
-                        !bestTeam.teamName.equals(teamsList.get(0).teamName)) i++;
-                else i=0;
+                        !team.teamName.equals(teamsList.get(0).teamName)) i++;
                 bestTeam = team;
             }
         }
         if (i > 0 && !lastRound) {
+            lastRound = true;
             playAnotherLapAndAnnounceWinner();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -135,6 +135,8 @@ public class PlayGameActivity extends MainActivity {
     }
 
     private void resetValues() {
+        for (Team team : teamsList)
+            team.score =  0;
         scores = 0;
         lap = 1;
         currentTeam = 0;
