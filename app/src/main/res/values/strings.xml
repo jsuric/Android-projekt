@@ -20,5 +20,5 @@
     <string name="cancel">Odustani</string>
     <string name="pogodi">&#x2713;</string>
     <string name="preskoci">&#x2717;</string>
-    <string name="deleteTeams">Izbriši</string>
+    <string name="deleteTeams">Izbriši zadnji tim</string>
 </resources>

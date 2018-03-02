@@ -83,7 +83,7 @@ public class CreateTeamsActivity extends AppCompatActivity {
     // call the activity that starts a game
     public void startGame (View view)
     {
-        if(gameTeams.isEmpty())
+        if(gameTeams.isEmpty() || gameTeams.size() < 2)
         {
             Toast.makeText(this, "Niste dodali timove!", Toast.LENGTH_LONG).show();
         }
@@ -103,7 +103,9 @@ public class CreateTeamsActivity extends AppCompatActivity {
     {
         TextView teams1 = (TextView) findViewById(R.id.show_teams_list);
         teams1.setText("");
-        gameTeams.clear();
+        gameTeams.remove(gameTeams.size()-1);
+        for (Team team : gameTeams)
+            show(team, teams1);
     }
 
 }
