@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">ALIAS</string>
     <string name="game">Alias</string>
     <string name="rules">Pravila</string>
     <string name="teams">Timovi</string>

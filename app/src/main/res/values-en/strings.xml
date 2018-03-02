@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">ALIAS</string>
+    <string name="game">Alias</string>
+    <string name="rules">Rules</string>
+    <string name="teams">Teams</string>
+    <string name="rulesString">
+        Goal is to hit as many right words as possible while your partner explains them to you.
+        While explaining you can\'t use the root word or the prohibited words on the bottom of the screen.
+        Every hit is +1 point, every error is -1 point. One game is 4 laps long. First lap first from the team guesses,
+        second lap second from the team, and repeat that one more time. In the end, wins team with biggest score.
+        If it is straightened you play one more lap and than the winner is announced.
+        You have 60sec for one turn. GOOD LUCK!
+    </string>
+    <string name="addTeam">Add</string>
+    <string name="startGame">PLAY</string>
+    <string name="teamname">Team Name</string>
+    <string name="firstPlayer">First player</string>
+    <string name="secondPlayer">Second player</string>
+    <string name="createTeam">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pogodi">&#x2713;</string>
+    <string name="preskoci">&#x2717;</string>
+    <string name="deleteTeams">Remove last team</string>
+</resources>
