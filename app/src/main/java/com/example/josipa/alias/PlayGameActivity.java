@@ -2,6 +2,7 @@ package com.example.josipa.alias;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class PlayGameActivity extends MainActivity {
@@ -27,6 +29,7 @@ public class PlayGameActivity extends MainActivity {
 
     int currentTeam =0;
     int numberOfTeams =0;
+    private boolean lastRound = false;
 
 
     @Override
@@ -65,8 +68,6 @@ public class PlayGameActivity extends MainActivity {
 
         @Override
         public void onFinish() {
-            String tim = "";
-            String player = "";
             addScoresToTeam(teamsList.get(currentTeam).teamName);
             scores = 0;
             currentTeam++;
@@ -76,19 +77,155 @@ public class PlayGameActivity extends MainActivity {
                 setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
                 waitForPlayerToBeReady();
             }
-            else if (currentTeam == numberOfTeams && (lap == 1 || lap == 3)){
-                lap++;
-                currentTeam = 0;
-                setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
-                waitForPlayerToBeReady();
+            else if (currentTeam == numberOfTeams && lap!=4){
+                if (lastRound) {
+                    calculateWinner(teamsList);
+                } else {
+                    lap++;
+                    currentTeam = 0;
+                    setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
+                    waitForPlayerToBeReady();
+                }
             }
             else {
-                calculateWinner();
+                calculateWinner(teamsList);
             }
         }
     };
+        fillDatabase(db);
+        getRandomWord();
+    }
 
-        //---add a contact---
+    private void calculateWinner(List<Team> teamsList) {
+        Team bestTeam = teamsList.get(0);
+        int i = 0;
+        for (Team team : teamsList) {
+            if (team.score >= bestTeam.score) {
+                if (team.score == bestTeam.score &&
+                        !bestTeam.teamName.equals(teamsList.get(0).teamName)) i++;
+                else i=0;
+                bestTeam = team;
+            }
+        }
+        if (i > 0 && !lastRound) {
+            playAnotherLapAndAnnounceWinner();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("(: POBJEDNIK :)")
+                    .setMessage("Pobjednik jeeee     \n" +bestTeam.teamName+ "\n sa "+bestTeam.score+" bodova! " +
+                    "\n ČESTITKE! :) \n Želite li ponovno igrati u istom sastavu?" )
+                    .setPositiveButton("DA", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            resetValues();
+                            waitForPlayerToBeReady();
+                        }
+                    })
+                    .setNegativeButton("NE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PlayGameActivity.this, CreateTeamsActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            dialog = builder.create();
+            dialog.show();
+        }
+
+    }
+
+    private void resetValues() {
+        scores = 0;
+        lap = 1;
+        currentTeam = 0;
+        setCurrentTeamAndPlayer(playingTeam, readingPlayer, score);
+        getRandomWord();
+
+    }
+
+    private void playAnotherLapAndAnnounceWinner() {
+            scores = 0;
+            currentTeam = 0;
+            lap=1;
+            setCurrentTeamAndPlayer(playingTeam,readingPlayer,score);
+            getRandomWord();
+            waitForPlayerToBeReady();
+            lastRound = true;
+    }
+
+    private void setCurrentTeamAndPlayer(TextView playingTeam, TextView readingPlayer, TextView score) {
+        String tim;
+        String player;
+        tim=teamsList.get(currentTeam).teamName;
+        playingTeam.setText(tim);
+        if (lap == 1 || lap == 3)
+            player = teamsList.get(currentTeam).firstPlayer;
+        else
+            player = teamsList.get(currentTeam).secondPlayer;
+        readingPlayer.setText(player);
+        score.setText("Bodovi: "+String.valueOf(scores));
+    }
+
+    private void addScoresToTeam(String teamName) {
+        for (Team team : teamsList) {
+            if (team.teamName.equals(teamName))
+            {
+                team.score += scores;
+            }
+        }
+    }
+
+    public void displayWords(Cursor c)
+    {
+        TextView t = (TextView)findViewById(R.id.rijec);
+        t.setText(c.getString(1)+"\n");
+
+        TextView t2 = (TextView)findViewById(R.id.zabranjene);
+        t2.setText(c.getString(2));
+
+    }
+
+    private void getRandomWord() {
+        Random r=new Random();
+        int n=(r.nextInt(121));
+        DBAdapter db = new DBAdapter(this);
+        db.open();
+        Cursor cu = db.getWord(n);
+        if (cu.moveToFirst())
+            displayWords(cu);
+        db.close();
+    }
+
+    public void pogodi(View view) {
+        scores++;
+        TextView t = (TextView)findViewById(R.id.bodovi);
+        t.setText("Bodovi: "+String.valueOf(scores));
+        getRandomWord();
+    }
+
+    public void preskoci(View view) {
+        scores--;
+        TextView t = (TextView)findViewById(R.id.bodovi);
+        t.setText("Bodovi: "+String.valueOf(scores));
+        getRandomWord();
+    }
+
+    private void waitForPlayerToBeReady() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Klikni za početak odbrojavanja.")
+                .setPositiveButton("KRENI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        timer.start();
+                    }
+                });
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void fillDatabase(DBAdapter db)
+    {
         db.open();
         long id = db.insertWord("Nogometaš", "Nogomet, Lopta, Manekenka");
         id = db.insertWord("Matematika", "Škola, Predmet, Brojevi");
@@ -216,105 +353,6 @@ public class PlayGameActivity extends MainActivity {
         id = db.insertWord("Učionica", "Učenici, Stolovi, Stolice");
         id = db.insertWord("Autocesta", "Cesta, Voziti, Brzo");
         db.close();
-
-        Random r=new Random();
-        int n=(r.nextInt(121));
-        db.open();
-        Cursor cu = db.getWord(n);
-        if (cu.moveToFirst())
-            displayWords(cu);
-        db.close();
-    }
-
-    private void calculateWinner() {
-        Team bestTeam = teamsList.get(0);
-        int i = 0;
-        for (Team team : teamsList) {
-            if (team.score >= bestTeam.score) {
-                if (team.score == bestTeam.score &&
-                        !bestTeam.teamName.equals(teamsList.get(0).teamName)) i++;
-                else i=0;
-                bestTeam = team;
-            }
-        }
-        if (i > 0) {
-            // kao treba odigrati još jedan krug
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Tim "+bestTeam.teamName+" pobjeđuje s "+ bestTeam.score+" bodova. ČESTITKE!",
-                    Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    private void setCurrentTeamAndPlayer(TextView playingTeam, TextView readingPlayer, TextView score) {
-        String tim;
-        String player;
-        tim=teamsList.get(currentTeam).teamName;
-        playingTeam.setText(tim);
-        if (lap == 1 || lap == 3)
-            player = teamsList.get(currentTeam).firstPlayer;
-        else
-            player = teamsList.get(currentTeam).secondPlayer;
-        readingPlayer.setText(player);
-        score.setText("Bodovi: "+String.valueOf(scores));
-    }
-
-    private void addScoresToTeam(String teamName) {
-        for (Team team : teamsList) {
-            if (team.teamName.equals(teamName))
-            {
-                team.score += scores;
-            }
-        }
-    }
-
-    public void displayWords(Cursor c)
-    {
-        TextView t = (TextView)findViewById(R.id.rijec);
-        t.setText(c.getString(1)+"\n");
-
-        TextView t2 = (TextView)findViewById(R.id.zabranjene);
-        t2.setText(c.getString(2));
-
-    }
-
-    private void getRandomWord() {
-        Random r=new Random();
-        int n=(r.nextInt(121));
-        DBAdapter db = new DBAdapter(this);
-        db.open();
-        Cursor cu = db.getWord(n);
-        if (cu.moveToFirst())
-            displayWords(cu);
-    }
-
-    public void pogodi(View view) {
-        scores++;
-        TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(scores));
-        getRandomWord();
-    }
-
-    public void preskoci(View view) {
-        scores--;
-        TextView t = (TextView)findViewById(R.id.bodovi);
-        t.setText("Bodovi: "+String.valueOf(scores));
-        getRandomWord();
-    }
-
-    private void waitForPlayerToBeReady() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Klikni za početak odbrojavanja.")
-                .setPositiveButton("KRENI", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        timer.start();
-                    }
-                });
-        dialog = builder.create();
-        dialog.show();
     }
 
 }

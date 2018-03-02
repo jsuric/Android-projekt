@@ -111,4 +111,5 @@ public class DBAdapter {
     {
         return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
+
 }
